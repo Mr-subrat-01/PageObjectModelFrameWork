@@ -1,12 +1,7 @@
 package com.utils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
-
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 /*
  * <p>This  class consist of Re-usable helper / utility methods</p>
  * @Author - Subrat Kumar
@@ -14,50 +9,44 @@ import org.openqa.selenium.chrome.ChromeDriver;
  * @See External Reference
  */
 public class CommonUtilities {
-	public Properties configData;
-	public WebDriver driver;
+
+	WebDriver driver;
+	
+	public CommonUtilities(WebDriver driver) {
+		// TODO Auto-generated constructor stub
+		this.driver=driver;
+	}
+
 	
 	/*
-	 * <p>This Method reads the config and parses the same into key value pairs</p>
+	 * <p>This Method is Click the element on browser</p>
 	 */
-	public void readConfig() {
-		FileInputStream fis;
-		try {
-			fis = new FileInputStream(new File("./src/test/resources/config.properties"));
-			configData = new Properties();
-			configData.load(fis);
-						System.out.println(configData.getProperty("browser.name"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			//			e.printStackTrace();
-			System.out.println("Unable to read Config"+e.getMessage());
-		}
-	}
-	/*
-	 * <p>This Method Lunch the browser depending the configuration</p>
-	 */
-	public void LunchBrowser() {
-		if(configData.getProperty("browser.name").equalsIgnoreCase("chrome")) {
-			System.setProperty("webdriver.chrome.driver", configData.getProperty("browser.executable"));
-			driver = new ChromeDriver();
-			driver.manage().window().maximize();
-		}else {
-			//			For Other Browser
-		}
+	public void click(By locaterType) {
+		driver.findElement(locaterType).click();
 	}
 	
 	/*
-	 * <p>This Method is close the browser</p>
+	 * <p>This Method is Send Text or Type something on browser</p>
 	 */
-	
-	public void closeBrowser() {
-		driver.quit();
+	public void typeText(By locaterType,String text) {
+		driver.findElement(locaterType).sendKeys(text);
 	}
 	
-	public static void main(String[] args) {
-		CommonUtilities comm= new CommonUtilities();
-		comm.readConfig();
-		comm.LunchBrowser();
-		comm.closeBrowser();
+	/*
+	 * <p>This Method is used to Set the url of the browser</p>
+	 */
+	public void navigate(String url) {
+		driver.get(url);
 	}
+	
+//	public static void main(String[] args) {
+//		CommonUtilities comm= new CommonUtilities();
+//		comm.readConfig();
+//		comm.LunchBrowser();
+//		comm.navigate("https://demo.guru99.com/v2/");
+//		comm.typeText(By.name("uid") , "mngr47659");
+//		comm.typeText(By.name("password") , "12345@123");
+//		comm.click(By.name("btnLogin"));
+//		comm.closeBrowser();
+//	}
 }	
